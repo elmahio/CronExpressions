@@ -1,0 +1,31 @@
+name: build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: nuget/setup-nuget@v1
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+    - name: Update version
+      run: |
+        (Get-Content -Path CronExpressions\source.extension.vsixmanifest) |
+          ForEach-Object {$_ -Replace '1.0.0', '1.0.${{ github.run_number }}'} |
+            Set-Content -Path CronExpressions\source.extension.vsixmanifest
+    - name: Restore
+      run: nuget restore
+    - name: Build
+      run: msbuild /p:configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
+    - uses: actions/upload-artifact@v2
+      with:
+        name: CronExpressions.vsix
+        path: CronExpressions\bin\Release\CronExpressions.vsix
