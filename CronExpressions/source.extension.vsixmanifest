@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="CronExpressions.3d798532-a105-46aa-bd87-c9cfb7f826bc" Version="1.0.0" Language="en-US" Publisher="elmah.io" />
+        <Identity Id="CronExpressions.3d798532-a105-46aa-bd87-c9cfb7f826bc" Version="1.0.0" Language="en-US" Publisher="elmahio" />
         <DisplayName>Cron Expressions</DisplayName>
         <Description xml:space="preserve">Quick info when hovering cron expressions.</Description>
         <Icon>icon.png</Icon>
