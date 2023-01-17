@@ -27,7 +27,7 @@ jobs:
       run: msbuild /p:configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
     - name: Test
       run: dotnet vstest test\CronExpressions.Test\bin\Release\net472\CronExpressions.Test.dll
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: CronExpressions.vsix
         path: src\CronExpressionsVsix\bin\Release\CronExpressionsVsix.vsix
