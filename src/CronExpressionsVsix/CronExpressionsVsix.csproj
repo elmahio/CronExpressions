@@ -13,8 +13,8 @@
     <ProjectGuid>{894F31B4-C86C-4879-838A-B30DC0501331}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CronExpressions.Vsix</RootNamespace>
-    <AssemblyName>CronExpressions.Vsix</AssemblyName>
+    <RootNamespace>CronExpressionsVsix</RootNamespace>
+    <AssemblyName>CronExpressionsVsix</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
