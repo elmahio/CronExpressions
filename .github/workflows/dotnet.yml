@@ -18,9 +18,9 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.2
     - name: Update version
       run: |
-        (Get-Content -Path src\CronExpressions\source.extension.vsixmanifest) |
+        (Get-Content -Path src\CronExpressions.Vsix\source.extension.vsixmanifest) |
           ForEach-Object {$_ -Replace '1.0.0', '1.0.${{ github.run_number }}'} |
-            Set-Content -Path src\CronExpressions\source.extension.vsixmanifest
+            Set-Content -Path src\CronExpressions.Vsix\source.extension.vsixmanifest
     - name: Restore
       run: nuget restore
     - name: Build
@@ -30,4 +30,4 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: CronExpressions.vsix
-        path: src\CronExpressions\bin\Release\CronExpressions.vsix
+        path: src\CronExpressions.Vsix\bin\Release\CronExpressions.vsix

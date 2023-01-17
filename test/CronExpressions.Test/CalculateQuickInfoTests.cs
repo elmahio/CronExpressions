@@ -1,11 +1,6 @@
-﻿using CronExpressions.Roslyn;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
+﻿using Microsoft.CodeAnalysis;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,7 +9,7 @@ namespace CronExpressions.Test
     public class CalculateQuickInfoTests
     {
         [Test]
-        public async Task CanFindExpressionInParameter()
+        public async Task CanFindExpressionInParameterAsync()
         {
             var code = @"
 public class Test
@@ -41,7 +36,7 @@ public class Test
         }
 
         [Test]
-        public async Task CanFindExpressionInMethodAttribute()
+        public async Task CanFindExpressionInMethodAttributeAsync()
         {
             var code = @"
 public class Test
@@ -64,7 +59,7 @@ public class Test
         }
 
         [Test]
-        public async Task CanFindExpressionInClassAttribute()
+        public async Task CanFindExpressionInClassAttributeAsync()
         {
             var code = @"
 [Trigger(""* * *¤ * *"")]
@@ -84,7 +79,7 @@ public class Test
         }
 
         [Test]
-        public async Task CanFindExpressionInVariable()
+        public async Task CanFindExpressionInVariableAsync()
         {
             var code = @"
 public class Test

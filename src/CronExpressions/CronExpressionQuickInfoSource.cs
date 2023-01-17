@@ -5,13 +5,12 @@ using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Adornments;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CronExpressions.Roslyn
+namespace CronExpressions
 {
     public class CronExpressionQuickInfoSource : IAsyncQuickInfoSource
     {
