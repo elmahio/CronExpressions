@@ -3,7 +3,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CronExpressions", "CronExpressions\CronExpressions.csproj", "{894F31B4-C86C-4879-838A-B30DC0501331}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{19931694-A6BA-44B1-9514-0CCA6B2884CE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DC92713F-F73D-46C2-B55B-E497B08FDDD8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CronExpressions", "src\CronExpressions\CronExpressions.csproj", "{894F31B4-C86C-4879-838A-B30DC0501331}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CronExpressions.Test", "test\CronExpressions.Test\CronExpressions.Test.csproj", "{25407CF7-B6AC-4B70-9877-A9B7E9E02D0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CronExpressions.Roslyn", "src\CronExpressions.Roslyn\CronExpressions.Roslyn.csproj", "{0AA66BE5-A56C-4C8C-8201-4FB910B0F6D6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{761D1AF8-92B6-4443-8AC6-D8F8057CBFE9}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,9 +40,38 @@ Global
 		{894F31B4-C86C-4879-838A-B30DC0501331}.Release|arm64.Build.0 = Release|arm64
 		{894F31B4-C86C-4879-838A-B30DC0501331}.Release|x86.ActiveCfg = Release|x86
 		{894F31B4-C86C-4879-838A-B30DC0501331}.Release|x86.Build.0 = Release|x86
+		{25407CF7-B6AC-4B70-9877-A9B7E9E02D0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25407CF7-B6AC-4B70-9877-A9B7E9E02D0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25407CF7-B6AC-4B70-9877-A9B7E9E02D0A}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{25407CF7-B6AC-4B70-9877-A9B7E9E02D0A}.Debug|arm64.Build.0 = Debug|Any CPU
+		{25407CF7-B6AC-4B70-9877-A9B7E9E02D0A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{25407CF7-B6AC-4B70-9877-A9B7E9E02D0A}.Debug|x86.Build.0 = Debug|Any CPU
+		{25407CF7-B6AC-4B70-9877-A9B7E9E02D0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25407CF7-B6AC-4B70-9877-A9B7E9E02D0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25407CF7-B6AC-4B70-9877-A9B7E9E02D0A}.Release|arm64.ActiveCfg = Release|Any CPU
+		{25407CF7-B6AC-4B70-9877-A9B7E9E02D0A}.Release|arm64.Build.0 = Release|Any CPU
+		{25407CF7-B6AC-4B70-9877-A9B7E9E02D0A}.Release|x86.ActiveCfg = Release|Any CPU
+		{25407CF7-B6AC-4B70-9877-A9B7E9E02D0A}.Release|x86.Build.0 = Release|Any CPU
+		{0AA66BE5-A56C-4C8C-8201-4FB910B0F6D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AA66BE5-A56C-4C8C-8201-4FB910B0F6D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AA66BE5-A56C-4C8C-8201-4FB910B0F6D6}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{0AA66BE5-A56C-4C8C-8201-4FB910B0F6D6}.Debug|arm64.Build.0 = Debug|Any CPU
+		{0AA66BE5-A56C-4C8C-8201-4FB910B0F6D6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0AA66BE5-A56C-4C8C-8201-4FB910B0F6D6}.Debug|x86.Build.0 = Debug|Any CPU
+		{0AA66BE5-A56C-4C8C-8201-4FB910B0F6D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AA66BE5-A56C-4C8C-8201-4FB910B0F6D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AA66BE5-A56C-4C8C-8201-4FB910B0F6D6}.Release|arm64.ActiveCfg = Release|Any CPU
+		{0AA66BE5-A56C-4C8C-8201-4FB910B0F6D6}.Release|arm64.Build.0 = Release|Any CPU
+		{0AA66BE5-A56C-4C8C-8201-4FB910B0F6D6}.Release|x86.ActiveCfg = Release|Any CPU
+		{0AA66BE5-A56C-4C8C-8201-4FB910B0F6D6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{894F31B4-C86C-4879-838A-B30DC0501331} = {DC92713F-F73D-46C2-B55B-E497B08FDDD8}
+		{25407CF7-B6AC-4B70-9877-A9B7E9E02D0A} = {19931694-A6BA-44B1-9514-0CCA6B2884CE}
+		{0AA66BE5-A56C-4C8C-8201-4FB910B0F6D6} = {DC92713F-F73D-46C2-B55B-E497B08FDDD8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7E3EA785-664D-4774-9514-BF6DA5F0B230}
