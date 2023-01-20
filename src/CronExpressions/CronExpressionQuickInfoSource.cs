@@ -85,7 +85,7 @@ namespace CronExpressions
             {
                 message = ExpressionDescriptor.GetDescription(expression, new Options
                 {
-                    Use24HourTimeFormat = DateTimeFormatInfo.CurrentInfo.AMDesignator == "",
+                    Use24HourTimeFormat = DateTimeFormatInfo.CurrentInfo.ShortTimePattern.Contains("H"),
                     ThrowExceptionOnParseError = false,
                     Verbose = true,
                 });
