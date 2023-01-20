@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Adornments;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -82,14 +83,19 @@ namespace CronExpressions
             string message = null;
             try
             {
-                message = ExpressionDescriptor.GetDescription(expression);
+                message = ExpressionDescriptor.GetDescription(expression, new Options
+                {
+                    Use24HourTimeFormat = DateTimeFormatInfo.CurrentInfo.AMDesignator == "",
+                    ThrowExceptionOnParseError = false,
+                    Verbose = true,
+                });
             }
             catch
             {
                 return null;
             }
 
-            if (string.IsNullOrWhiteSpace(message)) return null;
+            if (string.IsNullOrWhiteSpace(message) || message.StartsWith("error: ", System.StringComparison.InvariantCultureIgnoreCase)) return null;
 
             var stackedElements = new List<object>
                 {
