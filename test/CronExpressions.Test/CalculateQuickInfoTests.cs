@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using NUnit.Framework;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,7 +37,7 @@ public class Test
             Assert.That(result.HasValue);
             Assert.That(result.Value.message, Is.Not.Null);
             Assert.That(result.Value.message.Count, Is.EqualTo(2));
-            Assert.That(result.Value.message.First(), Is.EqualTo("Every minute"));
+            Assert.That(result.Value.message.First(), Is.EqualTo("Every minute, every hour, every day"));
         }
 
         [TestCase(Five)]
@@ -60,7 +61,7 @@ public class Test
             Assert.That(result.HasValue);
             Assert.That(result.Value.message, Is.Not.Null);
             Assert.That(result.Value.message.Count, Is.EqualTo(2));
-            Assert.That(result.Value.message.First(), Is.EqualTo("Every minute"));
+            Assert.That(result.Value.message.First(), Is.EqualTo("Every minute, every hour, every day"));
         }
 
         [TestCase(Five)]
@@ -81,7 +82,7 @@ public class Test
             Assert.That(result.HasValue);
             Assert.That(result.Value.message, Is.Not.Null);
             Assert.That(result.Value.message.Count, Is.EqualTo(2));
-            Assert.That(result.Value.message.First(), Is.EqualTo("Every minute"));
+            Assert.That(result.Value.message.First(), Is.EqualTo("Every minute, every hour, every day"));
         }
 
         [TestCase(Five)]
@@ -102,7 +103,26 @@ public class Test
             Assert.That(result.HasValue);
             Assert.That(result.Value.message, Is.Not.Null);
             Assert.That(result.Value.message.Count, Is.EqualTo(2));
-            Assert.That(result.Value.message.First(), Is.EqualTo("Every minute"));
+            Assert.That(result.Value.message.First(), Is.EqualTo("Every minute, every hour, every day"));
+        }
+
+        [TestCase("da-DK", "At 08:01, every day, every 4 days of the week, every 2 months")]
+        [TestCase("en-US", "At 08:01 AM, every day, every 4 days of the week, every 2 months")]
+        public async Task CultureTestAsync(string culture, string expectedMessage)
+        {
+            var code = @"
+public class Test
+{
+    private string expression = ""0 1 8 *¤ */2 */4"";
+}";
+
+            var position = code.IndexOf("¤");
+            var document = Document(code);
+            CultureInfo.CurrentCulture = new CultureInfo(culture);
+
+            var result = await CronExpressionQuickInfoSource.CalculateQuickInfoAsync(document, position, CancellationToken.None);
+
+            Assert.That(result.Value.message.First(), Is.EqualTo(expectedMessage));
         }
 
         private static Document Document(string code)
