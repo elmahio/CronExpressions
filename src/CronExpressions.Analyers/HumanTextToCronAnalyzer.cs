@@ -11,13 +11,12 @@ namespace CronExpressions.Analyers
     {
         public const string DiagnosticId = "CRON001";
 
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(Resources.AnalyzerTitle), Resources.ResourceManager, typeof(Resources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(Resources.AnalyzerMessageFormat), Resources.ResourceManager, typeof(Resources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(Resources.AnalyzerDescription), Resources.ResourceManager, typeof(Resources));
+        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(Resources.HumanTextToCronAnalyzerTitle), Resources.ResourceManager, typeof(Resources));
+        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(Resources.HumanTextToCronAnalyzerMessageFormat), Resources.ResourceManager, typeof(Resources));
+        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(Resources.HumanTextToCronAnalyzerDescription), Resources.ResourceManager, typeof(Resources));
         private const string Category = "Naming";
 
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category, DiagnosticSeverity.Info, isEnabledByDefault: true, description: Description);
-        //private static readonly DiagnosticDescriptor Rule2 = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category, DiagnosticSeverity.Info, isEnabledByDefault: true, description: Description);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get { return ImmutableArray.Create(Rule); } }
 
@@ -41,8 +40,6 @@ namespace CronExpressions.Analyers
                 {
                     var diagnostic = Diagnostic.Create(Rule, stringLiteralExpr.GetLocation());
                     ctx.ReportDiagnostic(diagnostic);
-                    //var diagnostic2 = Diagnostic.Create(Rule2, stringLiteralExpr.GetLocation());
-                    //ctx.ReportDiagnostic(diagnostic2);
                 }
             }, SyntaxKind.StringLiteralExpression);
         }

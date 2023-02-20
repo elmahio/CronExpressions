@@ -63,27 +63,54 @@ namespace CronExpressions.Analyers {
         /// <summary>
         ///   Looks up a localized string similar to Convert a human-readable string to a Cron expression.
         /// </summary>
-        internal static string AnalyzerDescription {
+        internal static string HumanTextToCronAnalyzerDescription {
             get {
-                return ResourceManager.GetString("AnalyzerDescription", resourceCulture);
+                return ResourceManager.GetString("HumanTextToCronAnalyzerDescription", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Convert to Cron expression.
         /// </summary>
-        internal static string AnalyzerMessageFormat {
+        internal static string HumanTextToCronAnalyzerMessageFormat {
             get {
-                return ResourceManager.GetString("AnalyzerMessageFormat", resourceCulture);
+                return ResourceManager.GetString("HumanTextToCronAnalyzerMessageFormat", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to To Cron expression.
         /// </summary>
-        internal static string AnalyzerTitle {
+        internal static string HumanTextToCronAnalyzerTitle {
             get {
-                return ResourceManager.GetString("AnalyzerTitle", resourceCulture);
+                return ResourceManager.GetString("HumanTextToCronAnalyzerTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find incorrect Cron expressions in C# code.
+        /// </summary>
+        internal static string IncorrectCronAnalyzerDescription {
+            get {
+                return ResourceManager.GetString("IncorrectCronAnalyzerDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Cron expression.
+        /// </summary>
+        internal static string IncorrectCronAnalyzerMessageFormat {
+            get {
+                return ResourceManager.GetString("IncorrectCronAnalyzerMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Cron expression.
+        /// </summary>
+        internal static string IncorrectCronAnalyzerTitle {
+            get {
+                return ResourceManager.GetString("IncorrectCronAnalyzerTitle", resourceCulture);
             }
         }
     }

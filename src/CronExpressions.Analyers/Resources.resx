@@ -117,13 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AnalyzerDescription" xml:space="preserve">
+  <data name="HumanTextToCronAnalyzerDescription" xml:space="preserve">
     <value>Convert a human-readable string to a Cron expression</value>
   </data>
-  <data name="AnalyzerMessageFormat" xml:space="preserve">
+  <data name="HumanTextToCronAnalyzerMessageFormat" xml:space="preserve">
     <value>Convert to Cron expression</value>
   </data>
-  <data name="AnalyzerTitle" xml:space="preserve">
+  <data name="HumanTextToCronAnalyzerTitle" xml:space="preserve">
     <value>To Cron expression</value>
+  </data>
+  <data name="IncorrectCronAnalyzerDescription" xml:space="preserve">
+    <value>Find incorrect Cron expressions in C# code</value>
+  </data>
+  <data name="IncorrectCronAnalyzerMessageFormat" xml:space="preserve">
+    <value>Invalid Cron expression</value>
+  </data>
+  <data name="IncorrectCronAnalyzerTitle" xml:space="preserve">
+    <value>Invalid Cron expression</value>
   </data>
 </root>
