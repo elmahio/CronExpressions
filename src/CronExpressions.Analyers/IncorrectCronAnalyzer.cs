@@ -61,13 +61,15 @@ namespace CronExpressions.Analyers
                         ReportIfInvalid(ctx, stringLiteralExpr, str, true);
                     }
                 }
-                // new CronTimer("* * * * *") or new CronJob("* * * * *")
+                // new CronTimer("* * * * *")
+                // new CronJob("* * * * *")
+                // new CronSchedule("* * * * *")
                 else if (parent is ObjectCreationExpressionSyntax oces)
                 {
                     var ins = oces.Type as IdentifierNameSyntax;
                     if (ins == null) return;
                     var type = ins.Identifier.ValueText;
-                    if (type == "CronTimer" || type == "CronJob")
+                    if (type == "CronTimer" || type == "CronJob" || type == "CronSchedule")
                     {
                         ReportIfInvalid(ctx, stringLiteralExpr, str, false);
                     }
