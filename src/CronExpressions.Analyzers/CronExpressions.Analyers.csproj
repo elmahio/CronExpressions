@@ -20,7 +20,7 @@
 		<RepositoryType>git</RepositoryType>
 		<PackageIcon>icon.png</PackageIcon>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-		<Description>bla bla</Description>
+		<Description>Roslyn analyzers part of the Cron Expressions Visual Studio extension to help you write Cron expressions.</Description>
 		<PackageTags>cron, expression, cronexpression, analyzers</PackageTags>
 		<NoPackageAnalysis>true</NoPackageAnalysis>
 		<GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
