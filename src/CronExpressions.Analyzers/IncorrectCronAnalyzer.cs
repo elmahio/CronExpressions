@@ -26,7 +26,7 @@ namespace CronExpressions.Analyers
                 var stringLiteralExpr = (LiteralExpressionSyntax)ctx.Node;
                 var parent = stringLiteralExpr.Parent.Parent.Parent;
 
-                var str = stringLiteralExpr.ToFullString();
+                var str = stringLiteralExpr.Token.ValueText;
                 if (string.IsNullOrWhiteSpace(str)) return;
                 str = str.TrimStart('\"').TrimEnd('\"').ToLower();
                 if (string.IsNullOrWhiteSpace(str)) return;

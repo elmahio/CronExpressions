@@ -28,8 +28,7 @@ namespace CronExpressions.Analyers
 
         private async Task<Solution> AppendComment(Document document, LiteralExpressionSyntax literal, bool includeSeconds, CancellationToken cancellationToken)
         {
-            var fullString = literal.ToFullString();
-            var str = fullString.TrimStart('\"').TrimEnd('\"');
+            var str = literal.Token.ValueText.TrimStart('\"').TrimEnd('\"');
             var message = ExpressionDescriptor.GetDescription(str, new Options
             {
                 Use24HourTimeFormat = DateTimeFormatInfo.CurrentInfo.ShortTimePattern.Contains("H"),
@@ -39,7 +38,7 @@ namespace CronExpressions.Analyers
             var root = await document.GetSyntaxRootAsync(cancellationToken);
             if (!string.IsNullOrWhiteSpace(message))
             {
-                var newLiteral = SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal($"{str}/* {message} */"));
+                var newLiteral = literal.WithTrailingTrivia(SyntaxFactory.Comment($"/* {message} */"));
                 root = root.ReplaceNode(literal, newLiteral);
             }
 

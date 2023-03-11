@@ -27,7 +27,7 @@ namespace CronExpressions.Analyers
 
         private async Task<Solution> ReplaceStringAsync(Document document, LiteralExpressionSyntax literal, bool includeSeconds, CancellationToken cancellationToken)
         {
-            var str = literal.ToFullString().TrimStart('\"').TrimEnd('\"');
+            var str = literal.Token.ValueText.TrimStart('\"').TrimEnd('\"');
             var cron = str.AsCronString(new CronOptions { IncludeSeconds = includeSeconds });
             var newLiteral = SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal(cron));
 
