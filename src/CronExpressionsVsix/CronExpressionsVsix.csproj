@@ -77,11 +77,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CronExpressions.Analyers\CronExpressions.Analyers.csproj">
-      <Project>{c8280e4e-f67f-4db0-ae6f-021f9b39518e}</Project>
+    <ProjectReference Include="..\CronExpressions.Analyzers\CronExpressions.Analyers.csproj">
+      <Project>{eece3097-cead-4e2b-9ec5-40ee7a25c127}</Project>
       <Name>CronExpressions.Analyers</Name>
-      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
     </ProjectReference>
     <ProjectReference Include="..\CronExpressions\CronExpressions.csproj">
       <Project>{90007a82-3c54-4dd9-b83a-a65812c3ff60}</Project>
