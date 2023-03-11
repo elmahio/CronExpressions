@@ -10,13 +10,9 @@ namespace CronExpressions.Analyers
     public class IncorrectCronAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = "CRON002";
-
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(Resources.IncorrectCronAnalyzerTitle), Resources.ResourceManager, typeof(Resources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(Resources.IncorrectCronAnalyzerMessageFormat), Resources.ResourceManager, typeof(Resources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(Resources.IncorrectCronAnalyzerDescription), Resources.ResourceManager, typeof(Resources));
         private const string Category = "Naming";
 
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, "Invalid Cron expression", "Invalid Cron expression", Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: "Find incorrect Cron expressions in C# code");
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get { return ImmutableArray.Create(Rule); } }
 

@@ -2,21 +2,71 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<IsPackable>false</IsPackable>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 
 		<!-- Avoid ID conflicts with the package project. -->
 		<PackageId>*$(MSBuildProjectFile)*</PackageId>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<PackageId>CronExpressions.Analyzers</PackageId>
+		<PackageVersion>1.0.0.0</PackageVersion>
+		<Authors>elmah.io</Authors>
+		<AssemblyName>CronExpressions.Analyzers</AssemblyName>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<PackageProjectUrl>https://marketplace.visualstudio.com/items?itemName=elmahio.cronexpressions</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/elmahio/CronExpressions</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<Description>bla bla</Description>
+		<PackageTags>cron, expression, cronexpression, analyzers</PackageTags>
+		<NoPackageAnalysis>true</NoPackageAnalysis>
+		<GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+		<GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+		<GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+		<DevelopmentDependency>true</DevelopmentDependency>
+	</PropertyGroup>
+
 	<ItemGroup>
-		<PackageReference Include="Cronos" Version="0.7.1" />
+		<PackageReference Include="Cronos" Version="0.7.1" PrivateAssets="All" IncludeInPackage="true" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.9.8" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.3.1" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.3.1" />
+		<PackageReference Include="norC" Version="1.0.11-pre" PrivateAssets="All" IncludeInPackage="true" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Update="Resources.Designer.cs" DesignTime="True" AutoGen="True" DependentUpon="Resources.resx" />
-		<EmbeddedResource Update="Resources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
+		<None Update="tools\*.ps1" CopyToOutputDirectory="Always" Pack="true" PackagePath="" />
+		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Include="icon.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<!-- Thank you https://www.meziantou.net/packaging-a-roslyn-analyzer-with-nuget-dependencies.htm -->
+	<Target Name="AddNuGetDlls" BeforeTargets="_GetPackageFiles">
+		<!-- Merge the collection of PackageReference and Assemblies using the NuGetPackageId key.
+        This produces a new list containing the DLL path and the "IncludeInPackage" metadata-->
+		<JoinItems Left="@(ResolvedCompileFileDefinitions)" LeftKey="NuGetPackageId" LeftMetadata="*" Right="@(PackageReference)" RightKey="" RightMetadata="*" ItemSpecToUse="Left">
+			<Output TaskParameter="JoinResult" ItemName="_PackagesToPack" />
+		</JoinItems>
+
+		<ItemGroup>
+			<!-- Remove NETStandard DLLs -->
+			<_PackagesToPack Remove="@(_PackagesToPack)" Condition="%(NuGetPackageId) == 'NETStandard.Library' Or %(NuGetPackageId) == 'Microsoft.CodeAnalysis.CSharp' Or %(NuGetPackageId) == 'Microsoft.CodeAnalysis.CSharp.Workspaces'" />
+		</ItemGroup>
+
+		<Message Importance="High" Text="Adding DLLs from the following packages: @(_PackagesToPack->'%(NuGetPackageId)')" />
+
+		<ItemGroup>
+			<!-- Update the collection of items to pack with the DLLs from the NuGet packages -->
+			<None Include="@(_PackagesToPack)" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+
+			<!-- Add the DLL produced by the current project to the NuGet package -->
+			<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		</ItemGroup>
+	</Target>
 </Project>

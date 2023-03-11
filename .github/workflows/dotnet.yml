@@ -21,6 +21,9 @@ jobs:
         (Get-Content -Path src\CronExpressionsVsix\source.extension.vsixmanifest) |
           ForEach-Object {$_ -Replace '1.0.0', '1.0.${{ github.run_number }}'} |
             Set-Content -Path src\CronExpressionsVsix\source.extension.vsixmanifest
+        (Get-Content -Path src\CronExpressions.Analyzers\CronExpressions.Analyers.csproj) |
+          ForEach-Object {$_ -Replace '1.0.0.0', '1.0.${{ github.run_number }}.0'} |
+            Set-Content -Path src\CronExpressions.Analyzers\CronExpressions.Analyers.csproj
     - name: Restore
       run: nuget restore
     - name: Build
@@ -31,3 +34,7 @@ jobs:
       with:
         name: CronExpressions.vsix
         path: src\CronExpressionsVsix\bin\Release\CronExpressionsVsix.vsix
+    - uses: actions/upload-artifact@v3
+      with:
+        name: CronExpressions.Analyzers.1.0.${{ github.run_number }}.nupkg
+        path: src\CronExpressions.Analyzers\bin\Release\CronExpressions.Analyzers.1.0.${{ github.run_number }}.nupkg

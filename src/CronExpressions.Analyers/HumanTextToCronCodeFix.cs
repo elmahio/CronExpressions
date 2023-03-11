@@ -8,10 +8,10 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
-using CronExpressions.Analyers;
 using norC;
+using System;
 
-namespace Analyzer1
+namespace CronExpressions.Analyers
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(HumanTextToCronCodeFix)), Shared]
     public class HumanTextToCronCodeFix : CodeFixProvider
@@ -51,15 +51,13 @@ namespace Analyzer1
             // Register a code action that will invoke the fix.
             context.RegisterCodeFix(
                 CodeAction.Create(
-                    title: CodeFixResources.CodeFixTitle,
-                    createChangedSolution: c => ReplaceStringAsync(context.Document, literal, false, c),
-                    equivalenceKey: nameof(CodeFixResources.CodeFixTitle)),
+                    title: "Convert to Cron expression",
+                    createChangedSolution: c => ReplaceStringAsync(context.Document, literal, false, c)),
                 diagnostic);
             context.RegisterCodeFix(
                 CodeAction.Create(
-                    title: CodeFixResources.CodeFixWithSecondsTitle,
-                    createChangedSolution: c => ReplaceStringAsync(context.Document, literal, true, c),
-                    equivalenceKey: nameof(CodeFixResources.CodeFixWithSecondsTitle)),
+                    title: "Convert to Cron expression (with seconds)",
+                    createChangedSolution: c => ReplaceStringAsync(context.Document, literal, true, c)),
                 diagnostic);
         }
     }

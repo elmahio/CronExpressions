@@ -10,13 +10,9 @@ namespace CronExpressions.Analyers
     public class HumanTextToCronAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = "CRON001";
-
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(Resources.HumanTextToCronAnalyzerTitle), Resources.ResourceManager, typeof(Resources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(Resources.HumanTextToCronAnalyzerMessageFormat), Resources.ResourceManager, typeof(Resources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(Resources.HumanTextToCronAnalyzerDescription), Resources.ResourceManager, typeof(Resources));
         private const string Category = "Naming";
 
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category, DiagnosticSeverity.Info, isEnabledByDefault: true, description: Description);
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, "To Cron expression", "To Cron expression", Category, DiagnosticSeverity.Info, isEnabledByDefault: true, description: "Convert a human-readable string to a Cron expression");
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get { return ImmutableArray.Create(Rule); } }
 
