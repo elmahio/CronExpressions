@@ -8,16 +8,17 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
-using norC;
+using System.Globalization;
+using CronExpressionDescriptor;
 
 namespace CronExpressions.Analyers
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(HumanTextToCronCodeFix)), Shared]
-    public class HumanTextToCronCodeFix : CodeFixProvider
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddExplanationAsCommandCodeFix)), Shared]
+    public class AddExplanationAsCommandCodeFix : CodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(HumanTextToCronAnalyzer.DiagnosticId); }
+            get { return ImmutableArray.Create(AddExplanationAsCommandAnalyzer.DiagnosticId); }
         }
 
         public sealed override FixAllProvider GetFixAllProvider()
@@ -25,17 +26,26 @@ namespace CronExpressions.Analyers
             return WellKnownFixAllProviders.BatchFixer;
         }
 
-        private async Task<Solution> ReplaceStringAsync(Document document, LiteralExpressionSyntax literal, bool includeSeconds, CancellationToken cancellationToken)
+        private async Task<Solution> AppendComment(Document document, LiteralExpressionSyntax literal, bool includeSeconds, CancellationToken cancellationToken)
         {
-            var str = literal.ToFullString().TrimStart('\"').TrimEnd('\"');
-            var cron = str.AsCronString(new CronOptions { IncludeSeconds = includeSeconds });
-            var newLiteral = SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal(cron));
-
+            var fullString = literal.ToFullString();
+            var str = fullString.TrimStart('\"').TrimEnd('\"');
+            var message = ExpressionDescriptor.GetDescription(str, new Options
+            {
+                Use24HourTimeFormat = DateTimeFormatInfo.CurrentInfo.ShortTimePattern.Contains("H"),
+                ThrowExceptionOnParseError = false,
+                Verbose = true,
+            });
             var root = await document.GetSyntaxRootAsync(cancellationToken);
-            root = root.ReplaceNode(literal, newLiteral);
+            if (!string.IsNullOrWhiteSpace(message))
+            {
+                var newLiteral = SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal($"{fullString}/* {message} */"));
+                root = root.ReplaceNode(literal, newLiteral);
+            }
 
             return document.WithSyntaxRoot(root).Project.Solution;
         }
+
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
@@ -49,13 +59,8 @@ namespace CronExpressions.Analyers
             // Register a code action that will invoke the fix.
             context.RegisterCodeFix(
                 CodeAction.Create(
-                    title: "Convert to Cron expression",
-                    createChangedSolution: c => ReplaceStringAsync(context.Document, literal, false, c)),
-                diagnostic);
-            context.RegisterCodeFix(
-                CodeAction.Create(
-                    title: "Convert to Cron expression (with seconds)",
-                    createChangedSolution: c => ReplaceStringAsync(context.Document, literal, true, c)),
+                    title: "Add explanation as comment",
+                    createChangedSolution: c => AppendComment(context.Document, literal, false, c)),
                 diagnostic);
         }
     }
