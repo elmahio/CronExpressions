@@ -15,6 +15,10 @@ Find invalid Cron syntax with frameworks like Azure Functions, Quartz.NET, and H
 
 ![Invalid syntax](invalid-syntax.png)
 
+Generate a comment with explanation of a Cron expression:
+
+![Generate comment](generate-comment.gif)
+
 ---
 
 Sponsored by [elmah.io](https://elmah.io).
