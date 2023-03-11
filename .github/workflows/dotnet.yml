@@ -38,3 +38,6 @@ jobs:
       with:
         name: CronExpressions.Analyzers.1.0.${{ github.run_number }}.nupkg
         path: src\CronExpressions.Analyzers\bin\Release\CronExpressions.Analyzers.1.0.${{ github.run_number }}.nupkg
+    - name: Push CronExpressions.Analyers to nuget.org
+      run: dotnet nuget push src\CronExpressions.Analyzers\bin\Release\CronExpressions.Analyzers.1.0.${{ github.run_number }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      if: ${{ github.event_name == 'push' }}
