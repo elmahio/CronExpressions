@@ -39,7 +39,7 @@ namespace CronExpressions.Analyers
             var root = await document.GetSyntaxRootAsync(cancellationToken);
             if (!string.IsNullOrWhiteSpace(message))
             {
-                var newLiteral = SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal($"{fullString}/* {message} */"));
+                var newLiteral = SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal($"{str}/* {message} */"));
                 root = root.ReplaceNode(literal, newLiteral);
             }
 
