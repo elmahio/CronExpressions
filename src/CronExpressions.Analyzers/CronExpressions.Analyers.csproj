@@ -27,15 +27,15 @@
 		<GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
 		<GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
 		<DevelopmentDependency>true</DevelopmentDependency>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Cronos" Version="0.7.1" PrivateAssets="All" IncludeInPackage="true" />
-		<PackageReference Include="CronExpressionDescriptor" Version="2.19.0" PrivateAssets="All" IncludeInPackage="true" />
+		<PackageReference Include="CronExpressionDescriptor" Version="2.20.0" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.9.8" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.3.1" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.3.1" />
-		<PackageReference Include="norC" Version="1.0.11-pre" PrivateAssets="All" IncludeInPackage="true" />
+		<PackageReference Include="norC" Version="1.0.11-pre" />
 	</ItemGroup>
 
 	<ItemGroup>
