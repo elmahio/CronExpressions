@@ -75,7 +75,7 @@ namespace CronExpressions
             if (literalExpressionSyntax == null) return null;
             else if (literalExpressionSyntax.Kind() != Microsoft.CodeAnalysis.CSharp.SyntaxKind.StringLiteralExpression) return null;
 
-            var text = literalExpressionSyntax.GetText()?.ToString();
+            var text = literalExpressionSyntax.Token.ValueText?.ToString();
             if (string.IsNullOrWhiteSpace(text)) return null;
 
             var expression = text.TrimStart('\"').TrimEnd('\"');
