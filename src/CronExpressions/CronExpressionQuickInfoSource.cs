@@ -69,6 +69,8 @@ namespace CronExpressions
                 literalExpressionSyntax = argumentSyntax.Expression as LiteralExpressionSyntax;
             else if (node is AttributeArgumentSyntax attributeArgumentSyntax)
                 literalExpressionSyntax = attributeArgumentSyntax.Expression as LiteralExpressionSyntax;
+            else if (node is ExpressionStatementSyntax expressionStatementSyntax)
+                literalExpressionSyntax = expressionStatementSyntax.Expression as LiteralExpressionSyntax;
             else if (node is LiteralExpressionSyntax literalExpressionSyntax1)
                 literalExpressionSyntax = literalExpressionSyntax1;
 

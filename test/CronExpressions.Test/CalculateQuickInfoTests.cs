@@ -87,6 +87,27 @@ public class Test
 
         [TestCase(Five)]
         [TestCase(Six)]
+        public async Task CanFindExpressionInJsonDocumentsAsync(string expression)
+        {
+            var code = @"
+{
+    ""expression"": ""CRON""
+}
+".Replace("CRON", expression);
+
+            var position = code.IndexOf("¤");
+            var document = Document(code);
+
+            var result = await CronExpressionQuickInfoSource.CalculateQuickInfoAsync(document, position, CancellationToken.None);
+
+            Assert.That(result.HasValue);
+            Assert.That(result.Value.message, Is.Not.Null);
+            Assert.That(result.Value.message.Count, Is.EqualTo(2));
+            Assert.That(result.Value.message.First(), Is.EqualTo("Every minute, every hour, every day"));
+        }
+
+        [TestCase(Five)]
+        [TestCase(Six)]
         public async Task CanFindExpressionInVariableAsync(string expression)
         {
             var code = @"
