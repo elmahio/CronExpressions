@@ -12,6 +12,24 @@ namespace CronExpressions.Test
         private const string Five = "* * *¤ * *";
         private const string Six = "0 * *¤ * * *";
 
+        private const string Json_SimpleObject = @"
+{
+    ""expression"": ""CRON""
+}
+";
+        private const string Json_Array = @"
+{
+    ""expressions"": [
+        ""CRON""
+    ]
+}";
+        private const string Json_ComplexObject = @"
+{
+    ""expression"": {
+        ""value"": ""CRON""
+    }
+}";
+
         [TestCase(Five)]
         [TestCase(Six)]
         public async Task CanFindExpressionInParameterAsync(string expression)
@@ -85,15 +103,15 @@ public class Test
             Assert.That(result.Value.message.First(), Is.EqualTo("Every minute, every hour, every day"));
         }
 
-        [TestCase(Five)]
-        [TestCase(Six)]
-        public async Task CanFindExpressionInJsonDocumentsAsync(string expression)
+        [TestCase(Five, Json_SimpleObject)]
+        [TestCase(Five, Json_Array)]
+        [TestCase(Six, Json_SimpleObject)]
+        [TestCase(Six, Json_Array)]
+        [TestCase(Six, Json_ComplexObject)]
+        [TestCase(Six, Json_ComplexObject)]
+        public async Task CanFindExpressionInJsonAsync(string expression, string json)
         {
-            var code = @"
-{
-    ""expression"": ""CRON""
-}
-".Replace("CRON", expression);
+            var code = json.Replace("CRON", expression);
 
             var position = code.IndexOf("¤");
             var document = Document(code);
