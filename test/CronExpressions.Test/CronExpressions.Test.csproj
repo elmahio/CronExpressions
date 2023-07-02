@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\CronExpressions.Analyzers\CronExpressions.Analyers.csproj" />
     <ProjectReference Include="..\..\src\CronExpressions\CronExpressions.csproj" />
   </ItemGroup>
 
