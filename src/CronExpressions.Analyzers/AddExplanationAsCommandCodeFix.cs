@@ -26,7 +26,7 @@ namespace CronExpressions.Analyers
             return WellKnownFixAllProviders.BatchFixer;
         }
 
-        private async Task<Solution> AppendComment(Document document, LiteralExpressionSyntax literal, bool includeSeconds, CancellationToken cancellationToken)
+        private async Task<Solution> AppendComment(Document document, LiteralExpressionSyntax literal, CancellationToken cancellationToken)
         {
             var str = literal.Token.ValueText.TrimStart('\"').TrimEnd('\"');
             var message = ExpressionDescriptor.GetDescription(str, new Options
@@ -59,7 +59,7 @@ namespace CronExpressions.Analyers
             context.RegisterCodeFix(
                 CodeAction.Create(
                     title: "Add explanation as comment",
-                    createChangedSolution: c => AppendComment(context.Document, literal, false, c)),
+                    createChangedSolution: c => AppendComment(context.Document, literal, c)),
                 diagnostic);
         }
     }

@@ -15,7 +15,7 @@ namespace CronExpressions
 {
     public class CronExpressionQuickInfoSource : IAsyncQuickInfoSource
     {
-        private ITextBuffer textBuffer;
+        private readonly ITextBuffer textBuffer;
 
         public CronExpressionQuickInfoSource(ITextBuffer textBuffer)
         {

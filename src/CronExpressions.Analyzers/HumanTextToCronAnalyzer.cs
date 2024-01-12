@@ -41,6 +41,7 @@ namespace CronExpressions.Analyers
             if (string.IsNullOrWhiteSpace(str)) return false;
             str = str.TrimStart('\"').TrimEnd('\"').ToLower();
             if (string.IsNullOrWhiteSpace(str)) return false;
+            if (str.Contains('\n') || str.Contains(Environment.NewLine)) return false;
 
             var terms = str.ToLowerInvariant().Split(' ');
             if (terms.Contains("once")) return true;

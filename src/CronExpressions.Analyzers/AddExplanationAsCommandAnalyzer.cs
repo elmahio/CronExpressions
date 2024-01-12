@@ -40,7 +40,7 @@ namespace CronExpressions.Analyers
                 }
                 catch
                 {
-                    return;
+                    // Don't report any diagnostics if an exception occour.
                 }
             }, SyntaxKind.StringLiteralExpression);
         }

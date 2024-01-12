@@ -34,11 +34,8 @@ namespace CronExpressions.Analyers
                 // CronExpression.Parse("* * * * * *")
                 if (parent is InvocationExpressionSyntax ies)
                 {
-                    var maes = ies.Expression as MemberAccessExpressionSyntax;
-                    if (maes == null) return;
-                    var typeName = maes.Expression as IdentifierNameSyntax;
-                    var methodName = maes.Name as IdentifierNameSyntax;
-                    if (typeName == null || methodName == null) return;
+                    if (!(ies.Expression is MemberAccessExpressionSyntax maes)) return;
+                    if (!(maes.Expression is IdentifierNameSyntax typeName) || !(maes.Name is IdentifierNameSyntax methodName)) return;
                     var type = typeName.Identifier.ValueText;
                     var method = methodName.Identifier.ValueText;
                     if (type == "CronExpression" && method == "Parse")
@@ -49,8 +46,7 @@ namespace CronExpressions.Analyers
                 // [TimerTrigger("* * * * *")]
                 else if (parent is AttributeSyntax @as)
                 {
-                    var name = @as.Name as IdentifierNameSyntax;
-                    if (name == null) return;
+                    if (!(@as.Name is IdentifierNameSyntax name)) return;
                     var type = name.Identifier.ValueText;
                     if (type == "TimerTrigger")
                     {
@@ -62,8 +58,7 @@ namespace CronExpressions.Analyers
                 // new CronSchedule("* * * * *")
                 else if (parent is ObjectCreationExpressionSyntax oces)
                 {
-                    var ins = oces.Type as IdentifierNameSyntax;
-                    if (ins == null) return;
+                    if (!(oces.Type is IdentifierNameSyntax ins)) return;
                     var type = ins.Identifier.ValueText;
                     if (type == "CronTimer" || type == "CronJob" || type == "CronSchedule")
                     {

@@ -1,4 +1,5 @@
-﻿using CronExpressions.Analyers;
+﻿#pragma warning disable CRON001 // To Cron expression
+using CronExpressions.Analyers;
 using NUnit.Framework;
 
 namespace CronExpressions.Test
@@ -17,7 +18,10 @@ namespace CronExpressions.Test
         [TestCase("each", false)]
         [TestCase("about each", false)]
         [TestCase("", false)]
+        [TestCase("once\r\nevery hour", false)]
+        [TestCase("once\nevery hour", false)]
         [TestCase("reach ", false)] // https://github.com/elmahio/CronExpressions/issues/4
         public void CanShouldReport(string input, bool expected) => Assert.That(HumanTextToCronAnalyzer.ShouldReport(input), Is.EqualTo(expected));
     }
 }
+#pragma warning restore CRON001 // To Cron expression
