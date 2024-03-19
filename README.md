@@ -11,7 +11,7 @@ Convert human-readable text to a Cron expression:
 
 ![Convert](convert.png)
 
-Find invalid Cron syntax with frameworks like Azure Functions, Quartz.NET, and Hangfire:
+Find invalid Cron syntax with frameworks like Azure Functions, Quartz.NET, NCrontab, and Hangfire:
 
 ![Invalid syntax](invalid-syntax.png)
 
