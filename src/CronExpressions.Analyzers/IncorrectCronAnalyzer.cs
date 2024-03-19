@@ -32,6 +32,8 @@ namespace CronExpressions.Analyers
                 if (string.IsNullOrWhiteSpace(str)) return;
 
                 // CronExpression.Parse("* * * * * *")
+                // CrontabSchedule.Parse("* * * * * *")
+                // CrontabSchedule.TryParse("* * * * * *")
                 if (parent is InvocationExpressionSyntax ies)
                 {
                     if (!(ies.Expression is MemberAccessExpressionSyntax maes)) return;
@@ -39,6 +41,10 @@ namespace CronExpressions.Analyers
                     var type = typeName.Identifier.ValueText;
                     var method = methodName.Identifier.ValueText;
                     if (type == "CronExpression" && method == "Parse")
+                    {
+                        ReportIfInvalid(ctx, stringLiteralExpr, str, false);
+                    }
+                    else if (type == "CrontabSchedule" && (method == "Parse" || method == "TryParse"))
                     {
                         ReportIfInvalid(ctx, stringLiteralExpr, str, false);
                     }
