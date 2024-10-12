@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.CSharp;
 using System.Collections.Immutable;
 using Cronos;
+using System.Linq;
 
 namespace CronExpressions.Analyers
 {
@@ -30,8 +31,19 @@ namespace CronExpressions.Analyers
                 str = str.TrimStart('\"').TrimEnd('\"').ToLower();
                 if (string.IsNullOrWhiteSpace(str)) return;
 
+                // Don't show the diagnostics if the string doesn't look like a CRON expression
                 var splitted = str.Split(' ');
                 if (splitted.Length < 5 || splitted.Length > 6) return;
+
+                // Don't show the diagnostics if a comment with the end result message is already in the code
+                if (stringLiteralExpr.Token.HasTrailingTrivia)
+                {
+                    SyntaxTriviaList trailing = stringLiteralExpr.Token.TrailingTrivia;
+
+                    var comment = trailing.FirstOrDefault(trivia => trivia.IsKind(SyntaxKind.MultiLineCommentTrivia));
+                    if (comment != default) return;
+                }
+
                 try
                 {
                     CronExpression.Parse(str, splitted.Length == 6 ? CronFormat.IncludeSeconds : CronFormat.Standard);
