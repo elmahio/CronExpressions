@@ -10,6 +10,8 @@ namespace CronExpressionsVsix
     [Name("Quick info when hovering cron expressions")]
     [Order(After = "default")]
     [ContentType("CSharp")]
+    [ContentType("yaml")]
+    [ContentType("json")]
     public class CronExpressions : IAsyncQuickInfoSourceProvider
     {
         public IAsyncQuickInfoSource TryCreateQuickInfoSource(ITextBuffer textBuffer)

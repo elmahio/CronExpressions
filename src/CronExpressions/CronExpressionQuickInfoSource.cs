@@ -40,8 +40,21 @@ namespace CronExpressions
 
                 var position = triggerPoint.Value.Position;
                 var document = snapshot.GetOpenDocumentInCurrentContextWithChanges();
-                var quickInfo = await CalculateQuickInfoAsync(document, position, cancellationToken);
-                if (quickInfo is null) return null;
+
+                (List<object> message, TextSpan span)? quickInfo = null;
+
+                if (document != null)
+                {
+                    // C# file
+                    quickInfo = await CalculateQuickInfoAsync(document, position, cancellationToken);
+                }
+                else
+                {
+                    // Non-Roslyn file
+                    quickInfo = CalculateQuickInfoTextFile(snapshot, position);
+                }
+
+                if (quickInfo is null || quickInfo.Value.message is null || quickInfo.Value.span == default) return null;
 
                 return new QuickInfoItem(
                     snapshot.CreateTrackingSpan(
@@ -52,8 +65,21 @@ namespace CronExpressions
             catch
             {
                 // No need to crash the user's Visual Studio
-                return null;
             }
+
+            return null;
+        }
+
+        private static (List<object> message, TextSpan span)? CalculateQuickInfoTextFile(ITextSnapshot snapshot, int position)
+        {
+            var line = snapshot.GetLineFromPosition(position);
+            var lineText = line.GetText();
+
+            var parts = lineText.Split(':');
+            if (parts.Length < 2) return null;
+
+            var cronExpression = parts[parts.Length - 1];
+            return CalculateQuickInfoElements(cronExpression, line.Start + lineText.LastIndexOf(':') + 1);
         }
 
         public static async Task<(List<object> message, TextSpan span)?> CalculateQuickInfoAsync(Document document, int position, CancellationToken cancellationToken)
@@ -72,18 +98,27 @@ namespace CronExpressions
             else if (node is LiteralExpressionSyntax literalExpressionSyntax1)
                 literalExpressionSyntax = literalExpressionSyntax1;
 
-            if (literalExpressionSyntax == null) return null;
-            else if (literalExpressionSyntax.Kind() != Microsoft.CodeAnalysis.CSharp.SyntaxKind.StringLiteralExpression) return null;
+            if (literalExpressionSyntax == null || literalExpressionSyntax.Kind() != Microsoft.CodeAnalysis.CSharp.SyntaxKind.StringLiteralExpression)
+                return null;
 
-            var text = literalExpressionSyntax.Token.ValueText?.ToString();
+            var text = literalExpressionSyntax.Token.ValueText;
             if (string.IsNullOrWhiteSpace(text)) return null;
 
-            var expression = text.TrimStart('\"').TrimEnd('\"');
+            var expression = text.Trim('\"');
+            return CalculateQuickInfoElements(expression, identifier.Span.Start);
+        }
 
-            string message = null;
+        private static (List<object> message, TextSpan span)? CalculateQuickInfoElements(string cronExpression, int spanStart)
+        {
+            // Trim the CRON expression and validate it's not empty
+            cronExpression = cronExpression.Trim('\'', '"', ' ');
+            if (string.IsNullOrWhiteSpace(cronExpression)) return null;
+
+            // Try to get the description from the CRON expression
+            string description = null;
             try
             {
-                message = ExpressionDescriptor.GetDescription(expression, new Options
+                description = ExpressionDescriptor.GetDescription(cronExpression, new Options
                 {
                     Use24HourTimeFormat = DateTimeFormatInfo.CurrentInfo.ShortTimePattern.Contains("H"),
                     ThrowExceptionOnParseError = false,
@@ -95,18 +130,21 @@ namespace CronExpressions
                 return null;
             }
 
-            if (string.IsNullOrWhiteSpace(message) || message.StartsWith("error: ", System.StringComparison.InvariantCultureIgnoreCase)) return null;
+            // Check if description is valid
+            if (string.IsNullOrWhiteSpace(description) || description.StartsWith("error: ", System.StringComparison.InvariantCultureIgnoreCase))
+                return null;
 
+            // Prepare elements for the quick info popup
             var stackedElements = new List<object>
+            {
+                description,
+                ClassifiedTextElement.CreateHyperlink("More details", "Click here to see more details about this expression", () =>
                 {
-                    message,
-                    ClassifiedTextElement.CreateHyperlink("More details", "Click here to see more details about this expression", () =>
-                    {
-                        Process.Start($"https://elmah.io/tools/cron-parser/#{expression.Replace(' ', '_')}");
-                    })
-                };
+                    Process.Start($"https://elmah.io/tools/cron-parser/#{cronExpression.Replace(' ', '_')}");
+                })
+            };
+            var span = new TextSpan(spanStart, cronExpression.Length);
 
-            var span = identifier.Span;
             return (stackedElements, span);
         }
     }
