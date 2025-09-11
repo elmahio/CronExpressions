@@ -9,13 +9,16 @@ on:
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: windows-2025
 
     steps:
-    - uses: actions/checkout@v3
-    - uses: nuget/setup-nuget@v1
+    - uses: actions/checkout@v5
+
+    - uses: nuget/setup-nuget@v2
+
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1.3
+      uses: microsoft/setup-msbuild@v2
+
     - name: Update version
       run: |
         (Get-Content -Path src\CronExpressionsVsix\source.extension.vsixmanifest) |
@@ -24,20 +27,40 @@ jobs:
         (Get-Content -Path src\CronExpressions.Analyzers\CronExpressions.Analyers.csproj) |
           ForEach-Object {$_ -Replace '1.0.0.0', '1.0.${{ github.run_number }}.0'} |
             Set-Content -Path src\CronExpressions.Analyzers\CronExpressions.Analyers.csproj
+
     - name: Restore
       run: nuget restore
+
     - name: Build
       run: msbuild /p:configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
+
     - name: Test
       run: dotnet vstest test\CronExpressions.Test\bin\Release\net472\CronExpressions.Test.dll
-    - uses: actions/upload-artifact@v3
+
+    - uses: actions/upload-artifact@v4
       with:
         name: CronExpressions.vsix
         path: src\CronExpressionsVsix\bin\Release\CronExpressionsVsix.vsix
-    - uses: actions/upload-artifact@v3
+
+    - uses: actions/upload-artifact@v4
       with:
         name: CronExpressions.Analyzers.1.0.${{ github.run_number }}.nupkg
         path: src\CronExpressions.Analyzers\bin\Release\CronExpressions.Analyzers.1.0.${{ github.run_number }}.nupkg
+
+    - name: Create Release
+      if: ${{ github.event_name == 'push' }}
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          ./src/CronExpressionsVsix/bin/Release/CronExpressionsVsix.vsix
+          ./src/CronExpressions.Analyzers/bin/Release/CronExpressions.Analyzers.1.0.${{ github.run_number }}.nupkg
+        tag_name: 1.0.${{ github.run_number }}
+        name: 1.0.${{ github.run_number }}
+        draft: false
+        fail_on_unmatched_files: true
+        generate_release_notes: true
+        token: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Push CronExpressions.Analyers to nuget.org
       run: dotnet nuget push src\CronExpressions.Analyzers\bin\Release\CronExpressions.Analyzers.1.0.${{ github.run_number }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
       if: ${{ github.event_name == 'push' }}
