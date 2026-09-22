@@ -10,6 +10,8 @@ jobs:
   build:
 
     runs-on: windows-2025
+    permissions:
+      id-token: write
 
     steps:
     - uses: actions/checkout@v5
@@ -61,6 +63,15 @@ jobs:
         generate_release_notes: true
         token: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: NuGet login (OIDC → temp API key)
+      uses: NuGet/login@v1
+      id: nuget-login
+      with:
+        user: ${{ secrets.NUGET_USER }}
+      if: ${{ github.event_name == 'push' }}
+
     - name: Push CronExpressions.Analyers to nuget.org
-      run: dotnet nuget push src\CronExpressions.Analyzers\bin\Release\CronExpressions.Analyzers.1.0.${{ github.run_number }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      env:
+        NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
+      run: dotnet nuget push src\CronExpressions.Analyzers\bin\Release\CronExpressions.Analyzers.1.0.${{ github.run_number }}.nupkg --api-key $env:NUGET_API_KEY --source https://api.nuget.org/v3/index.json
       if: ${{ github.event_name == 'push' }}
